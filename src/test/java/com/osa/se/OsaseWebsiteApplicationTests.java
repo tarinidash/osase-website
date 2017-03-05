@@ -1,14 +1,21 @@
 package com.osa.se;
 
+import com.icegreen.greenmail.junit.GreenMailRule;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import com.osa.se.fixture.*;
 import com.osa.se.model.Family;
 import com.osa.se.model.Member;
 import com.osa.se.model.Payment;
 import com.osa.se.service.*;
+import org.h2.tools.Server;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -20,10 +27,15 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class OsaseWebsiteApplicationTests {
 
-    //    private static Server h2Webserver;
-//    private static Server h2Tcpserver;
+    private static Server h2Webserver;
+    private static Server h2Tcpserver;
+
+    @Rule
+    public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.ALL);
+
     @Autowired
     private EventService eventService;
     @Autowired
@@ -40,20 +52,22 @@ public class OsaseWebsiteApplicationTests {
      *
      * @throws SQLException the sql exception
      */
-//    @BeforeClass
-//    public static void setUp() throws SQLException {
-//        h2Webserver = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
-//        h2Tcpserver = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9082").start();
-//    }
+
+    @BeforeClass
+    public static void setUp() throws SQLException {
+        h2Webserver = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8083").start();
+        h2Tcpserver = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9083").start();
+    }
 
     /**
      * Cleans up after all the tests are run.
      */
-//    @AfterClass
-//    public static void cleanUp() {
-//        h2Webserver.stop();
-//        h2Tcpserver.stop();
-//    }
+    @AfterClass
+    public static void cleanUp() {
+        h2Webserver.stop();
+        h2Tcpserver.stop();
+    }
+
     @Test
     public void contextLoads() throws Exception {
         eventService.save(EventFixture.getEvent());

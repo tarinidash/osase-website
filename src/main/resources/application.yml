@@ -16,6 +16,17 @@ spring:
     username: sa
     password:
 
+  mail:
+    host: 'smtp.gmail.com'
+    port: 587
+    username: ENC(URGhHFt19WL1ud3YHfYv+O24FAVSfLXZ/cdDvqhQZulnVju3jXRU+w==)
+    password: ENC(7gGye7LO5pLAeOYhIv0zc+TVe1ZRcjuT)
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
 hibernate:
   hbm2ddl:
     auto: update
@@ -37,4 +48,5 @@ stormpath:
     user:
       group:
         href: 'https://api.stormpath.com/v1/groups/2nlGvUv0hWZohBdL0xoFrN'
+
 ---

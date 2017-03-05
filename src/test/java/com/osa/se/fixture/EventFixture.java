@@ -11,6 +11,7 @@ public class EventFixture {
         Event event = new Event();
         event.setDescription("description");
         event.setEvent_name("eventName");
+        event.setNotified_to("osasemember@gmail.com");
         return event;
     }
 
@@ -18,6 +19,7 @@ public class EventFixture {
         Event event = new Event();
         event.setDescription("description1");
         event.setEvent_name("eventName1");
+        event.setNotified_to("osasemember1@gmail.com");
         return event;
     }
 }

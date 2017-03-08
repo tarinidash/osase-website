@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -46,5 +47,9 @@ public class Ledger {
 
     @Column(name = "balance", columnDefinition = "DECIMAL(20,2) NOT NULL")
     private BigDecimal balance;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
 }

@@ -17,18 +17,12 @@ import org.springframework.stereotype.Service;
 public class EventService {
 
     private EventRepository eventRepository;
-    private JavaMailSender javaMailSender;
-    private String notifiedBy;
 
-    public EventService(EventRepository eventRepository, JavaMailSender javaMailSender, @Value("${spring.mail.username}") final String notifiedBy) {
+    public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
-        this.javaMailSender = javaMailSender;
-        this.notifiedBy = notifiedBy;
     }
 
     public Event save(Event event) {
-        sendMail(event);
-        event.setNotified_by(notifiedBy);
         return eventRepository.save(event);
     }
 
@@ -60,11 +54,4 @@ public class EventService {
         eventRepository.deleteAll();
     }
 
-    private void sendMail(Event event) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setText(event.getDescription());
-        message.setSubject(event.getEvent_name());
-        message.setTo(event.getNotified_to());
-        javaMailSender.send(message);
-    }
 }

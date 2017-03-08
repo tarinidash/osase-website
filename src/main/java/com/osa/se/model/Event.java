@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by tarinidash on 2/27/17.
@@ -37,9 +38,9 @@ public class Event {
     @Column(name = "event_name", columnDefinition = "VARCHAR(255) NOT NULL")
     private String event_name;
 
-    @Column(name = "notified_to", columnDefinition = "VARCHAR(255) NOT NULL DEFAULT 'osase@googlegroups.com'")
-    private String notified_to;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "event")
+    private Set<Notification> notifications;
 
-    @Column(name = "notified_by", columnDefinition = "VARCHAR(255) NOT NULL DEFAULT 'osase_office+noreply@googlegroups.com'")
-    private String notified_by;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "event")
+    private Set<Payment> payments;
 }

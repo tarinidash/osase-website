@@ -3,9 +3,7 @@ package com.osa.se;
 import com.icegreen.greenmail.junit.GreenMailRule;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import com.osa.se.fixture.*;
-import com.osa.se.model.Family;
-import com.osa.se.model.Member;
-import com.osa.se.model.Payment;
+import com.osa.se.model.*;
 import com.osa.se.service.*;
 import org.h2.tools.Server;
 import org.junit.AfterClass;
@@ -46,6 +44,8 @@ public class OsaseWebsiteApplicationTests {
     private MemberService memberService;
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private NotificationService notificationService;
 
     /**
      * Sets up before all the tests are run.
@@ -70,18 +70,64 @@ public class OsaseWebsiteApplicationTests {
 
     @Test
     public void contextLoads() throws Exception {
-        eventService.save(EventFixture.getEvent());
-        eventService.save(EventFixture.getEvent1());
 
-        ledgerService.save(LedgerFixture.getLedger());
-        ledgerService.save(LedgerFixture.getLedger1());
-        ledgerService.save(LedgerFixture.getLedger2());
-        ledgerService.save(LedgerFixture.getLedger3());
-        ledgerService.save(LedgerFixture.getLedger4());
-        ledgerService.save(LedgerFixture.getLedger5());
-        ledgerService.save(LedgerFixture.getLedger6());
-        ledgerService.save(LedgerFixture.getLedger7());
-        ledgerService.save(LedgerFixture.getLedger8());
+        // save/create  event
+
+        Event event = EventFixture.getEvent();
+        eventService.save(event);
+
+        Event event1 = EventFixture.getEvent1();
+        eventService.save(event1);
+
+        // save/create notification
+
+        Notification notification = NotificationFixture.getNotification();
+        notification.setEvent(event);
+        notificationService.save(notification);
+
+        Notification notification1 = NotificationFixture.getNotification1();
+        notification1.setEvent(event1);
+        notificationService.save(notification1);
+
+        // save/create ledger
+
+        Ledger ledger =  LedgerFixture.getLedger();
+        ledger.setEvent(event);
+        ledgerService.save(ledger);
+
+        Ledger ledger1 =  LedgerFixture.getLedger1();
+        ledger1.setEvent(event);
+        ledgerService.save(ledger1);
+
+        Ledger ledger2 =  LedgerFixture.getLedger2();
+        ledger2.setEvent(event);
+        ledgerService.save(ledger2);
+
+        Ledger ledger3 =  LedgerFixture.getLedger3();
+        ledger3.setEvent(event);
+        ledgerService.save(ledger3);
+
+        Ledger ledger4 =  LedgerFixture.getLedger4();
+        ledger4.setEvent(event);
+        ledgerService.save(ledger4);
+
+        Ledger ledger5 =  LedgerFixture.getLedger5();
+        ledger5.setEvent(event1);
+        ledgerService.save(ledger5);
+
+        Ledger ledger6 =  LedgerFixture.getLedger6();
+        ledger6.setEvent(event1);
+        ledgerService.save(ledger6);
+
+        Ledger ledger7 =  LedgerFixture.getLedger7();
+        ledger7.setEvent(event1);
+        ledgerService.save(ledger7);
+
+        Ledger ledger8 =  LedgerFixture.getLedger8();
+        ledger8.setEvent(event1);
+        ledgerService.save(ledger8);
+
+
         assertThat(ledgerService.count(), equalTo(9L));
         assertThat(ledgerService.findLast().getBalance(), equalTo(new BigDecimal(-110.43).setScale(2, RoundingMode.CEILING)));
 
@@ -104,15 +150,19 @@ public class OsaseWebsiteApplicationTests {
 
         Payment payment = PaymentFixture.getPayment();
         payment.setFamily(family);
+        payment.setEvent(event);
         paymentService.save(payment);
 
         Payment payment1 = PaymentFixture.getPayment1();
         payment1.setFamily(family);
+        payment1.setEvent(event);
         paymentService.save(payment1);
 
         Payment payment2 = PaymentFixture.getPayment2();
         payment2.setFamily(family);
+        payment2.setEvent(event1);
         paymentService.save(payment2);
+
         assertThat(paymentService.count(), equalTo(3L));
 
 //        Thread.sleep(20000000L);
